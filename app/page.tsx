@@ -85,6 +85,13 @@ export default function HomePage() {
               <strong>What does your father do?</strong>
               <span className="followup-line" />
             </div>
+            <div className="preview-voice">
+              <span className="voice-label">LISTENING</span>
+              <div className="voice-wave" aria-hidden="true">
+                <i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i />
+              </div>
+              <span className="voice-time">00:18</span>
+            </div>
           </div>
           <div className="floating-note">
             <span className="note-icon">✳</span>
@@ -197,12 +204,22 @@ export default function HomePage() {
       </section>
 
       <footer className="landing-footer">
-        <Link className="wordmark" href="/">
-          <span className="brand-mark">f.</span>
-          <span>F1 Interview</span>
-        </Link>
-        <p>Practice clearly. Answer honestly. Be ready.</p>
-        <span className="footer-year">Made for the moment before.</span>
+        <div className="footer-brand">
+          <Link className="wordmark" href="/">
+            <span className="brand-mark">f.</span>
+            <span>F1 Interview</span>
+          </Link>
+          <p>Practice clearly. Answer honestly. Be ready.</p>
+        </div>
+        <div className="footer-middle">
+          <span className="footer-label">BUILT FOR THE MOMENT BEFORE</span>
+          <span>Focused F-1 interview practice for students preparing for the real conversation.</span>
+        </div>
+        <div className="footer-meta">
+          <span>F-1 ONLY</span>
+          <span>Practice tool · Not legal advice</span>
+          <span>© 2026 F1 Interview</span>
+        </div>
       </footer>
     </main>
   );
