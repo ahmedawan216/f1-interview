@@ -105,7 +105,7 @@ export default function HomePage() {
             <div className="floating-voice-wave" aria-hidden="true">
               <i /><i /><i /><i /><i /><i /><i /><i /><i />
             </div>
-            <span className="floating-voice-time">00:18</span>
+            
           </div>
           <div className="art-caption"><span>THE DIFFERENCE</span> The next question follows your answer.</div>
         </div>
