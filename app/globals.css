@@ -81,7 +81,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .followup-line { display: none; }
 .art-caption { position: absolute; bottom: 23px; left: 25px; display: flex; gap: 10px; align-items: center; color: #74796e; font-size: 9px; letter-spacing: .06em; }
 .art-caption span { font-family: var(--serif); font-style: italic; color: var(--green); }
-.floating-note { position: absolute; z-index: 2; top: 13%; right: 6%; display: flex; align-items: center; gap: 9px; padding: 11px 13px; border-radius: 999px; background: #fbfaf6; box-shadow: 0 8px 30px #4555441a; color: #626b5f; font: italic 11px/1.4 var(--serif); transform: rotate(3deg); animation: float-note 5s ease-in-out infinite; }
+.floating-note { position: absolute; z-index: 3; top: 13%; right: 6%; display: flex; align-items: center; gap: 9px; padding: 11px 13px; border-radius: 999px; background: #fbfaf6; box-shadow: 0 8px 30px #4555441a; color: #626b5f; font: italic 11px/1.4 var(--serif); transform: rotate(3deg); animation: float-note 5s ease-in-out infinite; }
 .note-icon { display: grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; color: var(--green); background: #e7ece4; font-style: normal; }
 .signal-strip { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 17px; min-height: 58px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); color: #747970; font-size: 7px; letter-spacing: .16em; }
 .signal-strip i { width: 3px; height: 3px; border-radius: 50%; background: #8b9a8b; }
@@ -91,7 +91,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .section-intro h2 em, .proof-copy h2 em, .report-copy h2 em, .closing h2 em { color: var(--green); }
 .section-intro > p:last-child, .proof-copy > p:last-child, .report-copy > p:last-child { max-width: 420px; margin: 0; color: #72776e; font-size: 12px; line-height: 1.85; }
 .step-list { border-top: 1px solid var(--line); }
-.step { display: grid; grid-template-columns: 42px 1fr 20px; gap: 18px; align-items: start; padding: 24px 5px; border-bottom: 1px solid var(--line); transition: transform .25s, background .25s, padding .25s; }
+.step { display: grid; grid-template-columns: 42px 1fr 20px; gap: 18px; align-items: start; padding: 24px 5px; border-bottom: 1px solid var(--line); transition: transform .25s, background .25s, padding .25s; cursor: pointer; }
 .step:hover { padding-left: 13px; padding-right: 13px; background: rgba(231,235,227,.48); }
 .step-number { color: #879087; font: italic 14px var(--serif); }
 .step h3 { margin: 0 0 6px; color: #333b34; font: 400 21px var(--serif); }
@@ -417,6 +417,44 @@ a.mode-card:hover .mode-arrow { transform: translate(2px, -2px); }
   .interview-footer { padding: 9px 0; }
   .interview-footer > span:last-child { font-size: 6px; }
 }
+
+/* Final landing interaction polish */
+.floating-voice {
+  position: absolute;
+  z-index: 3;
+  left: 6%;
+  bottom: 11%;
+  display: grid;
+  grid-template-columns: auto 92px auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 13px;
+  border: 1px solid rgba(36,76,64,.09);
+  border-radius: 999px;
+  background: rgba(250,249,245,.94);
+  box-shadow: 0 12px 35px rgba(44,55,43,.10);
+  color: #697269;
+  backdrop-filter: blur(5px);
+  animation: float-voice 7.5s ease-in-out infinite;
+}
+.floating-voice-copy, .floating-voice-time { font-size: 8px; letter-spacing: .11em; }
+.floating-voice-time { color: #8a9188; }
+.floating-voice-wave { height: 21px; display: flex; align-items: center; justify-content: center; gap: 3px; }
+.floating-voice-wave i { width: 2px; height: 8px; border-radius: 99px; background: #718b74; animation: voice-wave 1.2s ease-in-out infinite alternate; }
+.floating-voice-wave i:nth-child(2n) { animation-delay: -.4s; }
+.floating-voice-wave i:nth-child(3n) { animation-delay: -.7s; }
+.floating-voice-wave i:nth-child(4n) { animation-delay: -.2s; }
+@keyframes float-voice {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-2deg); }
+  50% { transform: translate3d(0, -7px, 0) rotate(-1deg); }
+}
+@media (max-width: 700px) {
+  .floating-voice { left: 4%; bottom: 8%; grid-template-columns: auto 64px auto; padding: 8px 10px; gap: 7px; }
+  .floating-voice-copy, .floating-voice-time { font-size: 6px; }
+  .floating-voice-wave { height: 17px; gap: 2px; }
+  .floating-voice-wave i { width: 1.5px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
