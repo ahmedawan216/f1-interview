@@ -9,16 +9,19 @@ const steps = [
     number: "01",
     title: "Tell us your story",
     text: "A few details about your university, program, background, and funding.",
+    href: "/app/practice/setup",
   },
   {
     number: "02",
     title: "Face the questions",
     text: "Practice one focused interview with questions that respond to what you actually say.",
+    href: "#proof",
   },
   {
     number: "03",
     title: "Know what to work on",
     text: "Leave with clear feedback on clarity, specificity, and apparent inconsistencies.",
+    href: "#report",
   },
 ];
 
@@ -97,6 +100,13 @@ export default function HomePage() {
             <span className="note-icon">✳</span>
             <span>It remembers<br />what you said.</span>
           </div>
+          <div className="floating-voice">
+            <span className="floating-voice-copy">VOICE PRACTICE</span>
+            <div className="floating-voice-wave" aria-hidden="true">
+              <i /><i /><i /><i /><i /><i /><i /><i /><i />
+            </div>
+            <span className="floating-voice-time">00:18</span>
+          </div>
           <div className="art-caption"><span>THE DIFFERENCE</span> The next question follows your answer.</div>
         </div>
       </section>
@@ -123,19 +133,19 @@ export default function HomePage() {
 
         <div className="step-list">
           {steps.map((step) => (
-            <article className="step" key={step.number}>
+            <Link className="step" href={step.href} key={step.number}>
               <span className="step-number">{step.number}</span>
               <div>
                 <h3>{step.title}</h3>
                 <p>{step.text}</p>
               </div>
               <span className="step-arrow" aria-hidden="true">↗</span>
-            </article>
+            </Link>
           ))}
         </div>
       </section>
 
-      <section className="proof-section">
+      <section className="proof-section" id="proof">
         <div className="proof-copy">
           <p className="eyebrow">THE PART THAT MATTERS</p>
           <h2>When your answer changes,<br /><em>the interview notices.</em></h2>
@@ -161,7 +171,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="report-section">
+      <section className="report-section" id="report">
         <div className="report-card">
           <div className="report-top">
             <span>YOUR PRACTICE REPORT</span>
