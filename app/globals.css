@@ -906,7 +906,7 @@ a.mode-card:hover .mode-arrow { transform: translate(2px, -2px); }
 
 
 
-/* Focused illustration + motion language */
+/* Focused illustration language */
 .hero-art,
 .approach,
 .proof-section,
@@ -915,15 +915,14 @@ a.mode-card:hover .mode-arrow { transform: translate(2px, -2px); }
 .practice-visual,
 .practice-modes-section { position: relative; }
 
-/* Keep the one useful illustration: the globe belongs to the interview composition. */
 .hero-visual-globe {
   position: absolute;
-  width: 390px;
-  height: 390px;
-  right: -28px;
+  width: 410px;
+  height: 410px;
+  right: -26px;
   bottom: -72px;
-  opacity: .24;
-  filter: saturate(.7) contrast(.95);
+  opacity: .30;
+  filter: saturate(.82) contrast(.97);
   transform: rotate(-7deg);
   mix-blend-mode: multiply;
   pointer-events: none;
@@ -940,15 +939,15 @@ a.mode-card:hover .mode-arrow { transform: translate(2px, -2px); }
 }
 .hero-art .preview-card { position: relative; }
 
-/* One marker line, directly under the emphasized phrase — no arrows. */
-.type-loop {
+/* The typing loop is intentionally reserved for the green closing section. */
+.closing .type-loop {
   position: relative;
   display: inline-block;
   clip-path: inset(0 100% 0 0);
   animation: type-heading 7.2s steps(var(--type-steps), end) infinite;
   will-change: clip-path;
 }
-.type-loop::after {
+.closing .type-loop::after {
   content: "";
   position: absolute;
   left: 1%;
@@ -958,10 +957,10 @@ a.mode-card:hover .mode-arrow { transform: translate(2px, -2px); }
   border-bottom: 4px solid currentColor;
   border-radius: 50%;
   transform: rotate(-1.5deg);
-  opacity: .7;
+  opacity: .72;
   pointer-events: none;
 }
-.type-loop::before {
+.closing .type-loop::before {
   content: "";
   position: absolute;
   left: 7%;
@@ -974,12 +973,6 @@ a.mode-card:hover .mode-arrow { transform: translate(2px, -2px); }
   opacity: .28;
   pointer-events: none;
 }
-.type-4 { --type-steps: 4; }
-.type-8 { --type-steps: 8; }
-.type-17 { --type-steps: 17; }
-.type-18 { --type-steps: 18; }
-.type-21 { --type-steps: 21; }
-.type-23 { --type-steps: 23; }
 .type-26 { --type-steps: 26; }
 
 @keyframes type-heading {
