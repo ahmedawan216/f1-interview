@@ -44,11 +44,13 @@ export default function PracticePage() {
           <h1>A little practice<br /><em>goes a long way.</em></h1>
           <p className="page-intro">Practice the questions that matter, get comfortable under pressure, and learn what you want to tighten before the real conversation.</p>
           <Link className="button button-dark practice-primary-cta" href="/app/practice/setup">
+            <svg className="marker marker-dashboard-cta" viewBox="0 0 150 42" aria-hidden="true"><path d="M5 27 C37 13 79 15 111 23 C127 27 139 25 146 17" /></svg>
             Start a full mock <span aria-hidden="true">→</span>
           </Link>
         </div>
 
         <div className="practice-visual" aria-hidden="true">
+          <img className="practice-illustration" src="/visuals/World-amico.svg" alt="" />
           <span className="practice-orbit practice-orbit-one" />
           <span className="practice-orbit practice-orbit-two" />
           <span className="practice-visual-index">F-1 / 01</span>
@@ -78,9 +80,9 @@ export default function PracticePage() {
 
       <section className="practice-modes-section">
         <div className="practice-section-heading">
-          <div>
+          <div className="practice-section-title-wrap">
             <p className="eyebrow">CHOOSE YOUR NEXT STEP</p>
-            <h2>Practice with <em>purpose.</em></h2>
+            <h2>Practice with <em>purpose.</em><svg className="marker marker-purpose" viewBox="0 0 160 35" aria-hidden="true"><path d="M5 21 C40 9 80 10 113 18 C132 23 148 20 156 12" /></svg></h2>
           </div>
           <p>Start with the full mock. The focused modes will grow around the things real users need most.</p>
         </div>
