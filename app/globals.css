@@ -904,171 +904,205 @@ a.mode-card:hover .mode-arrow { transform: translate(2px, -2px); }
 }
 
 
-/* Illustration layer — supporting atmosphere, never the hero */
+
+/* Illustration system — intentional placement + hand-drawn accents */
+.hero-art,
+.approach,
+.proof-section,
+.report-section,
+.closing,
+.practice-visual,
+.practice-modes-section { position: relative; }
+
 .hero-visual,
-.section-visual {
-  position: absolute;
-  z-index: 0;
+.illustration-stamp,
+.practice-illustration {
   pointer-events: none;
   user-select: none;
-  object-fit: contain;
-  filter: grayscale(.62) saturate(.55);
-  mix-blend-mode: multiply;
+  position: absolute;
 }
 
 .hero-visual-globe {
-  width: 340px;
-  height: 340px;
-  right: -42px;
-  bottom: -58px;
-  opacity: .12;
-  transform: rotate(-7deg);
-}
-
-.hero-visual-doodle {
-  width: 235px;
-  height: 175px;
-  left: -36px;
-  bottom: -16px;
-  opacity: .07;
-  object-fit: cover;
-  object-position: 50% 50%;
+  width: 410px;
+  height: 410px;
+  right: -26px;
+  bottom: -82px;
+  opacity: .23;
+  filter: saturate(.72) contrast(.92);
   transform: rotate(-8deg);
+  z-index: 0;
+  mix-blend-mode: multiply;
 }
 
-.hero-art > *:not(.hero-visual):not(.art-grain):not(.orbit) {
-  z-index: 2;
-}
 .hero-art .preview-card,
 .hero-art .floating-note,
 .hero-art .floating-voice,
 .hero-art .art-caption,
-.hero-art .hero-index {
-  z-index: 3;
+.hero-art .hero-index { z-index: 3; }
+
+.hero-art .preview-card { position: relative; }
+
+.marker {
+  position: absolute;
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: .78;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 4;
 }
 
-.section-visual {
-  opacity: .08;
+.marker-hero {
+  width: 190px;
+  height: 62px;
+  right: 5%;
+  top: 9%;
+  transform: rotate(-7deg);
 }
 
-.approach .section-visual-learning {
-  width: 300px;
-  height: 300px;
-  right: -58px;
+.marker-approach {
+  width: 132px;
+  height: 80px;
+  left: 43%;
+  top: 83px;
+  transform: rotate(-9deg);
+  opacity: .62;
+}
+
+.marker-proof {
+  width: 155px;
+  height: 70px;
+  right: 43%;
+  top: 70px;
+  transform: rotate(7deg);
+  opacity: .58;
+}
+
+.marker-report {
+  width: 170px;
+  height: 58px;
+  right: 45%;
+  bottom: 73px;
+  transform: rotate(-4deg);
+  opacity: .62;
+}
+
+.marker-closing {
+  width: 180px;
+  height: 60px;
+  left: 14%;
+  top: 76px;
+  stroke: rgba(255,255,255,.72);
+  opacity: .72;
+  transform: rotate(-4deg);
+}
+
+.illustration-stamp {
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.illustration-stamp img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: saturate(.62) contrast(.96);
+  mix-blend-mode: multiply;
+}
+.illustration-stamp-learning {
+  width: 255px;
+  height: 255px;
+  right: -28px;
   bottom: 28px;
-  transform: rotate(5deg);
+  opacity: .16;
+  transform: rotate(4deg);
 }
-
-.proof-section .section-visual-globe {
-  width: 330px;
-  height: 330px;
-  right: -75px;
-  top: 12px;
-  opacity: .07;
-  transform: rotate(-8deg);
-}
-
-.report-section .section-visual-report {
-  width: 300px;
-  height: 230px;
-  left: -38px;
-  bottom: -18px;
-  opacity: .055;
-  object-fit: cover;
-  transform: rotate(6deg);
-}
-
-.closing .section-visual-closing {
-  width: 340px;
-  height: 340px;
-  right: -76px;
-  top: -48px;
-  opacity: .09;
+.illustration-stamp-report {
+  width: 230px;
+  height: 180px;
+  left: -28px;
+  bottom: 18px;
+  opacity: .13;
   transform: rotate(-5deg);
 }
+.illustration-stamp-closing {
+  width: 270px;
+  height: 270px;
+  right: -55px;
+  bottom: -90px;
+  opacity: .12;
+  filter: grayscale(.25) saturate(.55);
+}
 
-.followup-card,
-.report-card {
-  position: relative;
-  z-index: 2;
+.practice-visual {
+  isolation: isolate;
+  overflow: hidden;
+}
+.practice-illustration {
+  width: 350px;
+  height: 350px;
+  right: -58px;
+  bottom: -85px;
+  z-index: 0;
+  opacity: .19;
+  filter: saturate(.7) contrast(.94);
+  transform: rotate(-7deg);
+  mix-blend-mode: multiply;
+}
+.practice-visual .practice-preview-card,
+.practice-visual .practice-note,
+.practice-visual .practice-visual-index { position: relative; z-index: 3; }
+
+.practice-section-title-wrap { position: relative; display: inline-block; }
+.marker-purpose {
+  width: 135px;
+  height: 30px;
+  left: 67px;
+  bottom: -22px;
+  stroke-width: 3;
+  opacity: .72;
+  transform: rotate(-3deg);
+}
+
+.practice-primary-cta { position: relative; }
+.marker-dashboard-cta {
+  width: 135px;
+  height: 38px;
+  right: -12px;
+  bottom: -22px;
+  stroke-width: 2.8;
+  opacity: .7;
+  transform: rotate(-3deg);
+  pointer-events: none;
 }
 
 @media (max-width: 700px) {
   .hero-visual-globe {
-    width: 250px;
-    height: 250px;
-    right: -72px;
-    bottom: -35px;
-    opacity: .09;
+    width: 270px;
+    height: 270px;
+    right: -68px;
+    bottom: -48px;
+    opacity: .14;
   }
-
-  .hero-visual-doodle {
-    width: 180px;
-    height: 135px;
-    left: -58px;
-    bottom: -22px;
-    opacity: .045;
-  }
-
-  .approach .section-visual-learning {
-    width: 220px;
-    height: 220px;
-    right: -82px;
-    bottom: -10px;
-    opacity: .055;
-  }
-
-  .proof-section .section-visual-globe {
-    width: 240px;
-    height: 240px;
-    right: -105px;
-    top: 10px;
-    opacity: .045;
-  }
-
-  .report-section .section-visual-report {
-    width: 210px;
-    height: 165px;
-    left: -70px;
-    bottom: -15px;
-    opacity: .04;
-  }
-
-  .closing .section-visual-closing {
-    width: 250px;
-    height: 250px;
-    right: -95px;
-    top: -38px;
-    opacity: .06;
-  }
-}
-
-/* Workspace illustration atmosphere */
-.practice-visual {
-  isolation: isolate;
-}
-.practice-visual::after {
-  content: "";
-  position: absolute;
-  width: 260px;
-  height: 260px;
-  right: -62px;
-  bottom: -78px;
-  border-radius: 50%;
-  background: url("/visuals/World-amico.svg") center / contain no-repeat;
-  opacity: .075;
-  filter: grayscale(.72) saturate(.45);
-  mix-blend-mode: multiply;
-  pointer-events: none;
-}
-.practice-preview-card,
-.practice-note {
-  z-index: 3;
+  .marker-hero { width: 145px; height: 48px; right: 1%; top: 12%; }
+  .marker-approach { left: auto; right: 7%; top: 76px; width: 105px; }
+  .marker-proof { right: 8%; top: 58px; width: 120px; }
+  .marker-report { right: 9%; bottom: 54px; width: 125px; }
+  .marker-closing { left: 7%; top: 58px; width: 130px; }
+  .illustration-stamp-learning { width: 185px; height: 185px; right: -72px; bottom: 0; opacity: .09; }
+  .illustration-stamp-report { width: 165px; height: 135px; left: -55px; bottom: 0; opacity: .08; }
+  .illustration-stamp-closing { width: 190px; height: 190px; right: -72px; bottom: -60px; opacity: .08; }
+  .practice-illustration { width: 240px; height: 240px; right: -70px; bottom: -58px; opacity: .11; }
+  .marker-purpose { width: 105px; left: 42px; bottom: -18px; }
+  .marker-dashboard-cta { width: 112px; right: -5px; bottom: -18px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .hero-visual,
-  .section-visual {
-    transform: none !important;
-  }
+  .illustration-stamp,
+  .practice-illustration { transform: none !important; }
 }
