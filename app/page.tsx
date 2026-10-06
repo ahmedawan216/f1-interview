@@ -67,6 +67,7 @@ export default function HomePage() {
         </div>
 
         <div className="hero-art" aria-label="Preview of an interview that follows up on an answer">
+          <img className="hero-visual hero-visual-globe" src="/visuals/World-amico.svg" alt="" aria-hidden="true" />
           <div className="art-grain" />
           <div className="orbit orbit-one" />
           <div className="orbit orbit-two" />
@@ -96,6 +97,7 @@ export default function HomePage() {
               <span className="voice-time">00:18</span>
             </div>
           </div>
+          <img className="hero-visual hero-visual-doodle" src="/visuals/undraw_exam-prep_nmly.svg" alt="" aria-hidden="true" />
           <div className="floating-note">
             <span className="note-icon">✳</span>
             <span>It remembers<br />what you said.</span>
@@ -122,6 +124,7 @@ export default function HomePage() {
       </section>
 
       <section className="approach" id="approach">
+        <img className="section-visual section-visual-learning" src="/visuals/Learning-cuate.svg" alt="" aria-hidden="true" />
         <div className="section-intro">
           <p className="eyebrow">HOW IT WORKS</p>
           <h2>Practice the conversation,<br /><em>not a memorized script.</em></h2>
@@ -146,6 +149,7 @@ export default function HomePage() {
       </section>
 
       <section className="proof-section" id="proof">
+        <img className="section-visual section-visual-globe" src="/visuals/World-amico.svg" alt="" aria-hidden="true" />
         <div className="proof-copy">
           <p className="eyebrow">THE PART THAT MATTERS</p>
           <h2>When your answer changes,<br /><em>the interview notices.</em></h2>
@@ -172,6 +176,7 @@ export default function HomePage() {
       </section>
 
       <section className="report-section" id="report">
+        <img className="section-visual section-visual-report" src="/visuals/undraw_exam-prep_nmly.svg" alt="" aria-hidden="true" />
         <div className="report-card">
           <div className="report-top">
             <span>YOUR PRACTICE REPORT</span>
@@ -204,6 +209,7 @@ export default function HomePage() {
       </section>
 
       <section className="closing">
+        <img className="section-visual section-visual-closing" src="/visuals/Learning-cuate.svg" alt="" aria-hidden="true" />
         <div className="closing-orbit" aria-hidden="true" />
         <p className="eyebrow">BEFORE THE REAL INTERVIEW</p>
         <h2>Make the moment<br /><em>feel a little less unknown.</em></h2>
