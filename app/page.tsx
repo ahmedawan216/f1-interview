@@ -51,7 +51,7 @@ export default function HomePage() {
       <section className="hero">
         <div className="hero-copy">
           <p className="eyebrow"><span className="eyebrow-dot" /> A little more ready</p>
-          <h1>Prepare before<br />they <em>ask.</em></h1>
+          <h1>Prepare before<br />they <em className="type-loop type-4">ask.</em></h1>
           <p className="hero-description">
             Practice your U.S. F-1 visa interview with an interviewer that
             remembers your answers, asks thoughtful follow-ups, and helps you
@@ -68,10 +68,6 @@ export default function HomePage() {
 
         <div className="hero-art" aria-label="Preview of an interview that follows up on an answer">
           <img className="hero-visual hero-visual-globe" src="/visuals/World-amico.svg" alt="" aria-hidden="true" />
-          <svg className="marker marker-hero" viewBox="0 0 220 70" aria-hidden="true">
-            <path d="M8 48 C48 29 91 33 132 39 C163 43 188 39 211 24" />
-            <path d="M202 17 L211 24 L201 30" />
-          </svg>
           <div className="art-grain" />
           <div className="orbit orbit-one" />
           <div className="orbit orbit-two" />
@@ -127,16 +123,9 @@ export default function HomePage() {
       </section>
 
       <section className="approach" id="approach">
-        <div className="illustration-stamp illustration-stamp-learning" aria-hidden="true">
-          <img src="/visuals/Learning-cuate.svg" alt="" />
-        </div>
-        <svg className="marker marker-approach" viewBox="0 0 150 90" aria-hidden="true">
-          <path d="M18 68 C34 40 57 22 92 20 C112 19 126 24 136 31" />
-          <path d="M128 22 L137 31 L125 34" />
-        </svg>
         <div className="section-intro">
           <p className="eyebrow">HOW IT WORKS</p>
-          <h2>Practice the conversation,<br /><em>not a memorized script.</em></h2>
+          <h2>Practice the conversation,<br /><em className="type-loop type-23">not a memorized script.</em></h2>
           <p>
             The goal is simple: help you explain your actual plans clearly,
             calmly, and consistently when someone asks the unexpected.
@@ -158,13 +147,9 @@ export default function HomePage() {
       </section>
 
       <section className="proof-section" id="proof">
-        <svg className="marker marker-proof" viewBox="0 0 180 80" aria-hidden="true">
-          <path d="M12 57 C44 24 82 20 115 31 C137 38 153 35 168 20" />
-          <path d="M157 18 L168 20 L162 29" />
-        </svg>
         <div className="proof-copy">
           <p className="eyebrow">THE PART THAT MATTERS</p>
-          <h2>When your answer changes,<br /><em>the interview notices.</em></h2>
+          <h2>When your answer changes,<br /><em className="type-loop type-21">the interview notices.</em></h2>
           <p>
             Good preparation is more than knowing common questions. Your
             answers need to make sense together. Practice helps you spot the
@@ -188,13 +173,6 @@ export default function HomePage() {
       </section>
 
       <section className="report-section" id="report">
-        <div className="illustration-stamp illustration-stamp-report" aria-hidden="true">
-          <img src="/visuals/undraw_exam-prep_nmly.svg" alt="" />
-        </div>
-        <svg className="marker marker-report" viewBox="0 0 190 65" aria-hidden="true">
-          <path d="M10 35 C48 19 91 21 127 31 C148 37 169 34 181 23" />
-          <path d="M172 19 L181 23 L174 31" />
-        </svg>
         <div className="report-card">
           <div className="report-top">
             <span>YOUR PRACTICE REPORT</span>
@@ -217,7 +195,7 @@ export default function HomePage() {
         </div>
         <div className="report-copy">
           <p className="eyebrow">AFTER THE PRACTICE</p>
-          <h2>Leave knowing<br /><em>what to fix next.</em></h2>
+          <h2>Leave knowing<br /><em className="type-loop type-17">what to fix next.</em></h2>
           <p>
             No mysterious score. No prediction about your visa. Just useful
             observations from the conversation you actually had.
@@ -227,16 +205,9 @@ export default function HomePage() {
       </section>
 
       <section className="closing">
-        <div className="illustration-stamp illustration-stamp-closing" aria-hidden="true">
-          <img src="/visuals/Learning-cuate.svg" alt="" />
-        </div>
-        <svg className="marker marker-closing" viewBox="0 0 210 70" aria-hidden="true">
-          <path d="M7 44 C45 17 93 17 132 30 C158 38 184 37 202 22" />
-          <path d="M193 18 L202 22 L196 30" />
-        </svg>
         <div className="closing-orbit" aria-hidden="true" />
         <p className="eyebrow">BEFORE THE REAL INTERVIEW</p>
-        <h2>Make the moment<br /><em>feel a little less unknown.</em></h2>
+        <h2>Make the moment<br /><em className="type-loop type-26">feel a little less unknown.</em></h2>
         <Link className="button button-light" href="/app/practice/setup">
           Start your free interview <Arrow />
         </Link>
