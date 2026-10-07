@@ -1033,3 +1033,212 @@ a.mode-card:hover .mode-arrow { transform: translate(2px, -2px); }
     clip-path: inset(0 0 0 0);
   }
 }
+
+
+/* =========================================================
+   Illustration-led visual system
+   One strong object per surface. The artwork supports the
+   story; it never competes with the product UI.
+   ========================================================= */
+
+.hero-study-object {
+  position: absolute;
+  z-index: 2;
+  left: 3%;
+  bottom: 3%;
+  width: 150px;
+  transform: rotate(-5deg);
+  pointer-events: none;
+  filter: drop-shadow(0 18px 22px rgba(42,55,42,.10));
+}
+.hero-study-object img {
+  display: block;
+  width: 100%;
+  height: auto;
+  mix-blend-mode: multiply;
+}
+.hero-study-object span {
+  position: absolute;
+  left: 16px;
+  bottom: -18px;
+  padding: 7px 9px;
+  background: #f7f6f1;
+  color: #536454;
+  font: italic 9px/1.25 var(--serif);
+  letter-spacing: .02em;
+  transform: rotate(3deg);
+  box-shadow: 0 8px 20px rgba(45,57,44,.08);
+}
+.hero-visual-globe {
+  width: 390px;
+  height: 390px;
+  right: -42px;
+  bottom: -85px;
+  opacity: .23;
+}
+
+.approach {
+  grid-template-columns: .82fr 1.18fr;
+  gap: 10%;
+}
+.approach-intro-column {
+  min-width: 0;
+}
+.approach .step-list {
+  grid-column: 2;
+}
+.approach-intro-column {
+  grid-column: 1;
+}
+.approach::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 53px;
+  width: 120px;
+  height: 1px;
+  background: #cfd5cc;
+  transform: rotate(-4deg);
+}
+.approach::before {
+  content: "01";
+  position: absolute;
+  right: 0;
+  top: 101px;
+  color: #9aa197;
+  font: italic 13px var(--serif);
+}
+
+.practice-visual {
+  isolation: isolate;
+}
+.practice-illustration {
+  position: absolute;
+  z-index: 0;
+  width: 215px;
+  height: 215px;
+  object-fit: cover;
+  left: -15px;
+  bottom: -15px;
+  border-radius: 50%;
+  mix-blend-mode: multiply;
+  opacity: .96;
+  transform: rotate(-4deg);
+  filter: saturate(.94);
+}
+.practice-visual::after {
+  width: 230px;
+  height: 230px;
+  right: -70px;
+  bottom: -65px;
+  opacity: .12;
+}
+.practice-preview-card {
+  margin-left: 30px;
+}
+.practice-note {
+  right: 4%;
+}
+
+.placeholder-heading-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 250px;
+  gap: 8%;
+  align-items: center;
+}
+.placeholder-art {
+  position: relative;
+  min-height: 250px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #e9ebe3;
+  box-shadow: 0 22px 55px rgba(44,55,43,.08);
+}
+.placeholder-art img {
+  width: 190px;
+  height: 190px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+.placeholder-art span {
+  position: absolute;
+  left: 16px;
+  bottom: 13px;
+  color: #6e7b70;
+  font: italic 10px/1.25 var(--serif);
+}
+.profile-art img {
+  width: 220px;
+  height: 220px;
+}
+.progress-art img {
+  width: 175px;
+  height: 175px;
+}
+.placeholder-card {
+  border-radius: 0;
+}
+.placeholder-spark {
+  font: italic 16px var(--serif);
+}
+
+@media (max-width: 900px) {
+  .approach {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+  .approach-intro-column,
+  .approach .step-list {
+    grid-column: 1;
+  }
+  .approach::before {
+    top: 85px;
+  }
+  .hero-study-object {
+    width: 115px;
+    left: 1%;
+    bottom: 3%;
+  }
+  .hero-visual-globe {
+    width: 300px;
+    height: 300px;
+    right: -75px;
+    bottom: -65px;
+    opacity: .16;
+  }
+  .placeholder-heading-row {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .placeholder-art {
+    min-height: 210px;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero-study-object {
+    width: 92px;
+    left: 2%;
+    bottom: 3%;
+  }
+  .hero-study-object span {
+    display: none;
+  }
+  .practice-illustration {
+    width: 150px;
+    height: 150px;
+    left: -18px;
+    bottom: -18px;
+  }
+  .practice-preview-card {
+    margin-left: 12px;
+  }
+  .placeholder-art {
+    min-height: 190px;
+  }
+  .placeholder-art img {
+    width: 145px;
+    height: 145px;
+  }
+}
