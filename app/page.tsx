@@ -68,6 +68,10 @@ export default function HomePage() {
 
         <div className="hero-art" aria-label="Preview of an interview that follows up on an answer">
           <img className="hero-visual hero-visual-globe" src="/visuals/World-amico.svg" alt="" aria-hidden="true" />
+          <div className="hero-study-object" aria-hidden="true">
+            <img src="/visuals/6885305.jpg" alt="" />
+            <span>YOUR STORY<br />IS THE MATERIAL.</span>
+          </div>
           <div className="art-grain" />
           <div className="orbit orbit-one" />
           <div className="orbit orbit-two" />
@@ -123,13 +127,22 @@ export default function HomePage() {
       </section>
 
       <section className="approach" id="approach">
-        <div className="section-intro">
+        <div className="approach-intro-column">
+          <div className="section-intro">
           <p className="eyebrow">HOW IT WORKS</p>
           <h2>Practice the conversation,<br /><em >not a memorized script.</em></h2>
           <p>
             The goal is simple: help you explain your actual plans clearly,
             calmly, and consistently when someone asks the unexpected.
           </p>
+          </div>
+        </div>
+
+        <div className="approach-visual" aria-hidden="true">
+          <div className="approach-visual-frame">
+            <img src="/visuals/Learning-cuate.svg" alt="" />
+          </div>
+          <span className="approach-visual-note">LEARN THE STORY.<br />DON'T MEMORIZE THE LINE.</span>
         </div>
 
         <div className="step-list">
