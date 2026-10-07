@@ -49,7 +49,7 @@ export default function PracticePage() {
         </div>
 
         <div className="practice-visual" aria-hidden="true">
-          <img className="practice-illustration" src="/visuals/World-amico.svg" alt="" />
+          <img className="practice-illustration" src="/visuals/6885305.jpg" alt="" />
           <span className="practice-orbit practice-orbit-one" />
           <span className="practice-orbit practice-orbit-two" />
           <span className="practice-visual-index">F-1 / 01</span>
