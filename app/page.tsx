@@ -51,7 +51,7 @@ export default function HomePage() {
       <section className="hero">
         <div className="hero-copy">
           <p className="eyebrow"><span className="eyebrow-dot" /> A little more ready</p>
-          <h1>Prepare before<br />they <em className="type-loop type-4">ask.</em></h1>
+          <h1>Prepare before<br />they <em >ask.</em></h1>
           <p className="hero-description">
             Practice your U.S. F-1 visa interview with an interviewer that
             remembers your answers, asks thoughtful follow-ups, and helps you
@@ -68,6 +68,10 @@ export default function HomePage() {
 
         <div className="hero-art" aria-label="Preview of an interview that follows up on an answer">
           <img className="hero-visual hero-visual-globe" src="/visuals/World-amico.svg" alt="" aria-hidden="true" />
+          <div className="hero-study-object" aria-hidden="true">
+            <img src="/visuals/6885305.jpg" alt="" />
+            <span>YOUR STORY<br />IS THE MATERIAL.</span>
+          </div>
           <div className="art-grain" />
           <div className="orbit orbit-one" />
           <div className="orbit orbit-two" />
@@ -123,16 +127,18 @@ export default function HomePage() {
       </section>
 
       <section className="approach" id="approach">
-        <div className="section-intro">
+        <div className="approach-intro-column">
+          <div className="section-intro">
           <p className="eyebrow">HOW IT WORKS</p>
-          <h2>Practice the conversation,<br /><em className="type-loop type-23">not a memorized script.</em></h2>
+          <h2>Practice the conversation,<br /><em >not a memorized script.</em></h2>
           <p>
             The goal is simple: help you explain your actual plans clearly,
             calmly, and consistently when someone asks the unexpected.
           </p>
+          </div>
         </div>
 
-        <div className="step-list">
+                <div className="step-list">
           {steps.map((step) => (
             <Link className="step" href={step.href} key={step.number}>
               <span className="step-number">{step.number}</span>
@@ -149,7 +155,7 @@ export default function HomePage() {
       <section className="proof-section" id="proof">
         <div className="proof-copy">
           <p className="eyebrow">THE PART THAT MATTERS</p>
-          <h2>When your answer changes,<br /><em className="type-loop type-21">the interview notices.</em></h2>
+          <h2>When your answer changes,<br /><em >the interview notices.</em></h2>
           <p>
             Good preparation is more than knowing common questions. Your
             answers need to make sense together. Practice helps you spot the
@@ -195,7 +201,7 @@ export default function HomePage() {
         </div>
         <div className="report-copy">
           <p className="eyebrow">AFTER THE PRACTICE</p>
-          <h2>Leave knowing<br /><em className="type-loop type-17">what to fix next.</em></h2>
+          <h2>Leave knowing<br /><em >what to fix next.</em></h2>
           <p>
             No mysterious score. No prediction about your visa. Just useful
             observations from the conversation you actually had.
