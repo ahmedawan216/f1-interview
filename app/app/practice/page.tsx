@@ -41,7 +41,7 @@ export default function PracticePage() {
       <section className="practice-hero">
         <div className="practice-heading">
           <p className="eyebrow">YOUR PRACTICE SPACE <span className="eyebrow-dot" /></p>
-          <h1>A little practice<br /><em className="type-loop type-18">goes a long way.</em></h1>
+          <h1>A little practice<br /><em>goes a long way.</em></h1>
           <p className="page-intro">Practice the questions that matter, get comfortable under pressure, and learn what you want to tighten before the real conversation.</p>
           <Link className="button button-dark practice-primary-cta" href="/app/practice/setup">
             Start a full mock <span aria-hidden="true">→</span>
