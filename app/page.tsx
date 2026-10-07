@@ -138,14 +138,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="approach-visual" aria-hidden="true">
-          <div className="approach-visual-frame">
-            <img src="/visuals/Learning-cuate.svg" alt="" />
-          </div>
-          <span className="approach-visual-note">LEARN THE STORY.<br />DON'T MEMORIZE THE LINE.</span>
-        </div>
-
-        <div className="step-list">
+                <div className="step-list">
           {steps.map((step) => (
             <Link className="step" href={step.href} key={step.number}>
               <span className="step-number">{step.number}</span>
