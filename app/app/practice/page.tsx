@@ -41,7 +41,7 @@ export default function PracticePage() {
       <section className="practice-hero">
         <div className="practice-heading">
           <p className="eyebrow">YOUR PRACTICE SPACE <span className="eyebrow-dot" /></p>
-          <h1>A little practice<br /><em>goes a long way.</em></h1>
+          <h1>A little practice<br /><em className="marked">goes a long way.<img className="marker-line" src="/art/marker-underline.webp" alt="" aria-hidden="true" /></em></h1>
           <p className="page-intro">Practice the questions that matter, get comfortable under pressure, and learn what you want to tighten before the real conversation.</p>
           <Link className="button button-dark practice-primary-cta" href="/app/practice/setup">
             Start a full mock <span aria-hidden="true">→</span>
@@ -49,10 +49,7 @@ export default function PracticePage() {
         </div>
 
         <div className="practice-visual" aria-hidden="true">
-          <img className="practice-illustration" src="/visuals/6885305.jpg" alt="" />
-          <span className="practice-orbit practice-orbit-one" />
-          <span className="practice-orbit practice-orbit-two" />
-          <span className="practice-visual-index">F-1 / 01</span>
+          <div className="practice-stage"><span className="practice-orbit practice-orbit-one" /><span className="practice-orbit practice-orbit-two" /></div>
           <div className="practice-preview-card">
             <div className="practice-preview-top">
               <span><i /> LIVE PRACTICE</span>
@@ -61,19 +58,12 @@ export default function PracticePage() {
             <div className="practice-preview-rule" />
             <p className="practice-preview-label">QUESTION 03</p>
             <p className="practice-preview-question">How will you fund your education?</p>
-            <div className="practice-preview-answer">
-              <span>YOUR ANSWER</span>
-              <strong>My father will cover my tuition and living expenses.</strong>
-            </div>
-            <div className="practice-preview-followup">
-              <span>FOLLOW-UP</span>
-              <strong>What does your father do?</strong>
-            </div>
             <div className="practice-preview-wave">
               <i /><i /><i /><i /><i /><i /><i /><i /><i />
             </div>
           </div>
-          <span className="practice-note">It remembers what you said.</span>
+          <img className="practice-student" src="/art/student.svg" alt="" />
+          <img className="practice-mic" src="/art/mic.svg" alt="" />
         </div>
       </section>
 
@@ -81,7 +71,7 @@ export default function PracticePage() {
         <div className="practice-section-heading">
           <div className="practice-section-title-wrap">
             <p className="eyebrow">CHOOSE YOUR NEXT STEP</p>
-            <h2>Practice with <em>purpose.</em><svg className="marker marker-purpose" viewBox="0 0 160 35" aria-hidden="true"><path d="M5 21 C40 9 80 10 113 18 C132 23 148 20 156 12" /></svg></h2>
+            <h2>Practice with <em className="marked">purpose.</em><img className="marker-line" src="/art/marker-wave.webp" alt="" aria-hidden="true" /></h2>
           </div>
           <p>Start with the full mock. The focused modes will grow around the things real users need most.</p>
         </div>

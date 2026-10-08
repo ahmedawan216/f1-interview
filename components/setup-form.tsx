@@ -80,7 +80,7 @@ export default function SetupForm() {
       </details>
 
       <div className="form-submit-row">
-        <p><span>✳</span> Your information stays in this browser for this practice session.</p>
+        <p><img src="/art/doodle-spark.webp" alt="" aria-hidden="true" /> Your information stays in this browser for this practice session.</p>
         <button className="button button-dark" type="submit">Continue to your interview <span aria-hidden="true">→</span></button>
       </div>
       {error && <p className="form-error" role="alert">{error}</p>}

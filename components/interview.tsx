@@ -49,9 +49,9 @@ export default function Interview() {
       <section className="interview-screen interview-finished">
         <Link className="wordmark interview-brand" href="/app/practice"><span className="brand-mark">f.</span><span>F1 Interview</span></Link>
         <div className="finished-card">
-          <span className="finished-spark">✳</span>
+          <img className="finished-plane" src="/art/plane.svg" alt="" aria-hidden="true" />
           <p className="eyebrow">SESSION COMPLETE</p>
-          <h1>You showed up.<br /><em>That’s a good start.</em></h1>
+          <h1>You showed up.<br /><em className="marked">That’s a good start.<img className="marker-line" src="/art/marker-underline.webp" alt="" aria-hidden="true" /></em></h1>
           <p className="page-intro">You spent {formatTime(elapsed)} practicing. Take a moment to notice what felt clear — and what you’d like to explore next.</p>
           <Link className="button button-dark" href="/app/practice">Back to your practice <span aria-hidden="true">→</span></Link>
         </div>
@@ -90,7 +90,7 @@ export default function Interview() {
 
         <div className={`listening-card${thinking ? " processing" : ""}`}>
           <div className="listening-indicator">
-            <span className="listening-pulse"><i /></span>
+            <img className="listening-mic" src="/art/mic.svg" alt="" aria-hidden="true" />
             <span>{thinking ? "Reflecting on your response" : "Listening to your response"}</span>
           </div>
           <div className="listening-wave" aria-hidden="true">

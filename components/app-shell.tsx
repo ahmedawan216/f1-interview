@@ -25,6 +25,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="workspace">
+      {!onInterview && (
       <aside className="sidebar">
         <Link className="wordmark app-wordmark" href="/app/practice">
           <span className="brand-mark">f.</span>
@@ -45,12 +46,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           })}
         </nav>
         <div className="sidebar-bottom">
-          <span className="sidebar-flower">✳</span>
           <p>Make space to think.<br />You’re doing just fine.</p>
           <span className="sidebar-edition">F-1 INTERVIEW PRACTICE</span>
         </div>
       </aside>
-      <div className="workspace-main">
+      )}
+      <div className={onInterview ? "workspace-main interview-main" : "workspace-main"}>
         {!onInterview && (
           <header className="workspace-topbar">
             <div className="breadcrumb"><span>Workspace</span><span>/</span><strong>{navigation.find((item) => pathname.startsWith(item.href))?.label ?? "Practice"}</strong></div>

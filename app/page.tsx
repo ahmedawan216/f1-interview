@@ -7,34 +7,36 @@ function Arrow() {
 const steps = [
   {
     number: "01",
+    icon: "pin",
     title: "Tell us your story",
     text: "A few details about your university, program, background, and funding.",
     href: "/app/practice/setup",
   },
   {
     number: "02",
+    icon: "mic",
     title: "Face the questions",
     text: "Practice one focused interview with questions that respond to what you actually say.",
     href: "#proof",
   },
   {
     number: "03",
+    icon: "page",
     title: "Know what to work on",
     text: "Leave with clear feedback on clarity, specificity, and apparent inconsistencies.",
     href: "#report",
   },
 ];
 
+function StepIcon({ name }: { name: string }) {
+  if (name === "pin") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s6-5.6 6-11a6 6 0 1 0-12 0c0 5.4 6 11 6 11Z" /><circle cx="12" cy="10" r="2.2" /></svg>;
+  if (name === "mic") return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" /></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h8l3.5 3.5v13.5H7z" /><path d="M10 12h5.5M10 15.5h5.5M10 8.5h2.5" /></svg>;
+}
+
 export default function HomePage() {
   return (
     <main className="landing">
-      <div className="landing-atmosphere" aria-hidden="true">
-        <span className="atmosphere-shape atmosphere-shape-one" />
-        <span className="atmosphere-shape atmosphere-shape-two" />
-        <span className="atmosphere-line atmosphere-line-one" />
-        <span className="atmosphere-line atmosphere-line-two" />
-      </div>
-
       <header className="marketing-header">
         <Link className="wordmark" href="/" aria-label="F1 Interview home">
           <span className="brand-mark">f.</span>
@@ -51,7 +53,7 @@ export default function HomePage() {
       <section className="hero">
         <div className="hero-copy">
           <p className="eyebrow"><span className="eyebrow-dot" /> A little more ready</p>
-          <h1>Prepare before<br />they <em >ask.</em></h1>
+          <h1>Prepare before<br />they <em className="marked">ask.<img className="marker-line" src="/art/marker-underline.webp" alt="" aria-hidden="true" /></em></h1>
           <p className="hero-description">
             Practice your U.S. F-1 visa interview with an interviewer that
             remembers your answers, asks thoughtful follow-ups, and helps you
@@ -67,15 +69,11 @@ export default function HomePage() {
         </div>
 
         <div className="hero-art" aria-label="Preview of an interview that follows up on an answer">
-          <img className="hero-visual hero-visual-globe" src="/visuals/World-amico.svg" alt="" aria-hidden="true" />
-          <div className="hero-study-object" aria-hidden="true">
-            <img src="/visuals/6885305.jpg" alt="" />
-            <span>YOUR STORY<br />IS THE MATERIAL.</span>
+          <div className="hero-stage" aria-hidden="true">
+            <div className="orbit orbit-one" />
+            <div className="orbit orbit-two" />
           </div>
-          <div className="art-grain" />
-          <div className="orbit orbit-one" />
-          <div className="orbit orbit-two" />
-          <div className="hero-index">01 / 03</div>
+          <img className="hero-globe" src="/art/globe.svg" alt="" aria-hidden="true" />
           <div className="preview-card">
             <div className="preview-topline">
               <span><span className="live-dot" /> F-1 MOCK INTERVIEW</span>
@@ -86,12 +84,11 @@ export default function HomePage() {
             <p className="preview-question">How will you fund your education?</p>
             <div className="preview-answer">
               <span className="answer-mark">YOU</span>
-              <span>My father will cover my tuition and living expenses.</span>
+              <span>My <mark>father</mark> will cover my tuition and living expenses.</span>
             </div>
             <div className="preview-followup">
               <span className="followup-mark">FOLLOW-UP</span>
               <strong>What does your father do?</strong>
-              <span className="followup-line" />
             </div>
             <div className="preview-voice">
               <span className="voice-label">LISTENING</span>
@@ -101,18 +98,11 @@ export default function HomePage() {
               <span className="voice-time">00:18</span>
             </div>
           </div>
+          <img className="hero-mic" src="/art/mic.svg" alt="" aria-hidden="true" />
           <div className="floating-note">
             <span className="note-icon">✳</span>
             <span>It remembers<br />what you said.</span>
           </div>
-          <div className="floating-voice">
-            <span className="floating-voice-copy">VOICE PRACTICE</span>
-            <div className="floating-voice-wave" aria-hidden="true">
-              <i /><i /><i /><i /><i /><i /><i /><i /><i />
-            </div>
-            
-          </div>
-          <div className="art-caption"><span>THE DIFFERENCE</span> The next question follows your answer.</div>
         </div>
       </section>
 
@@ -129,33 +119,37 @@ export default function HomePage() {
       <section className="approach" id="approach">
         <div className="approach-intro-column">
           <div className="section-intro">
-          <p className="eyebrow">HOW IT WORKS</p>
-          <h2>Practice the conversation,<br /><em >not a memorized script.</em></h2>
-          <p>
-            The goal is simple: help you explain your actual plans clearly,
-            calmly, and consistently when someone asks the unexpected.
-          </p>
+            <p className="eyebrow">HOW IT WORKS</p>
+            <h2>Practice the conversation,<br /><em>not a memorized script.</em></h2>
+            <p>
+              The goal is simple: help you explain your actual plans clearly,
+              calmly, and consistently when someone asks the unexpected.
+            </p>
           </div>
+          <img className="approach-student" src="/art/student.svg" alt="" aria-hidden="true" />
         </div>
 
-                <div className="step-list">
+        <ol className="step-path">
           {steps.map((step) => (
-            <Link className="step" href={step.href} key={step.number}>
-              <span className="step-number">{step.number}</span>
-              <div>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
-              </div>
-              <span className="step-arrow" aria-hidden="true">↗</span>
-            </Link>
+            <li key={step.number}>
+              <Link className="step" href={step.href}>
+                <span className="step-node"><StepIcon name={step.icon} /></span>
+                <span className="step-number">{step.number}</span>
+                <div>
+                  <h3>{step.title}</h3>
+                  <p>{step.text}</p>
+                </div>
+                <span className="step-arrow" aria-hidden="true">↗</span>
+              </Link>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
 
       <section className="proof-section" id="proof">
         <div className="proof-copy">
           <p className="eyebrow">THE PART THAT MATTERS</p>
-          <h2>When your answer changes,<br /><em >the interview notices.</em></h2>
+          <h2>When your answer changes,<br /><em>the interview notices.</em></h2>
           <p>
             Good preparation is more than knowing common questions. Your
             answers need to make sense together. Practice helps you spot the
@@ -163,18 +157,21 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="followup-card">
-          <div className="followup-card-top">
-            <span>01 / YOUR ANSWER</span>
-            <span>FUNDING</span>
+        <div className="followup-stage">
+          <div className="followup-card">
+            <div className="followup-card-top">
+              <span>01 / YOUR ANSWER</span>
+              <span>FUNDING</span>
+            </div>
+            <p>“<mark>My father</mark> is sponsoring my studies and will cover my expenses.”</p>
           </div>
-          <p>“My father is sponsoring my studies and will cover my expenses.”</p>
-          <div className="followup-divider"><span>THE INTERVIEWER FOLLOWS UP</span></div>
-          <div className="followup-question">
-            <span className="mini-orb">f.</span>
+          <img className="followup-arrow" src="/art/arrow-curve.webp" alt="" aria-hidden="true" />
+          <div className="followup-reply">
+            <span className="followup-reply-label"><span className="mini-orb">f.</span> THE INTERVIEWER FOLLOWS UP</span>
             <strong>What does your father do for a living?</strong>
+            <span className="followup-footer"><span className="tiny-dot" /> Your answer shapes what comes next.</span>
+            <img className="followup-bubble" src="/art/doodle-bubble.webp" alt="" aria-hidden="true" />
           </div>
-          <div className="followup-footer"><span className="tiny-dot" /> Your answer shapes what comes next.</div>
         </div>
       </section>
 
@@ -201,17 +198,23 @@ export default function HomePage() {
         </div>
         <div className="report-copy">
           <p className="eyebrow">AFTER THE PRACTICE</p>
-          <h2>Leave knowing<br /><em >what to fix next.</em></h2>
+          <h2>Leave knowing<br /><em>what to fix next.</em></h2>
           <p>
             No mysterious score. No prediction about your visa. Just useful
             observations from the conversation you actually had.
           </p>
           <Link className="text-link" href="/app/practice/setup">Try a free interview <Arrow /></Link>
+          <img className="report-coach" src="/art/coach.svg" alt="" aria-hidden="true" />
         </div>
       </section>
 
       <section className="closing">
         <div className="closing-orbit" aria-hidden="true" />
+        <div className="closing-flight" aria-hidden="true">
+          <svg viewBox="0 0 420 220" fill="none"><path d="M6 206C90 196 150 120 230 112s120 24 184-92" /></svg>
+          <img src="/art/plane.svg" alt="" />
+        </div>
+        <img className="closing-spark" src="/art/doodle-spark.webp" alt="" aria-hidden="true" />
         <p className="eyebrow">BEFORE THE REAL INTERVIEW</p>
         <h2>Make the moment<br /><em className="type-loop type-26">feel a little less unknown.</em></h2>
         <Link className="button button-light" href="/app/practice/setup">
