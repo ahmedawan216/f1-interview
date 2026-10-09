@@ -2,49 +2,138 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
-const questions = [
-  "Good morning. What is the purpose of your trip to the United States?",
-  "Why did you choose this particular university?",
-  "What interests you most about your program of study?",
-  "How do you plan to fund your education?",
-  "What are your plans after you complete your studies?",
-  "How does this program connect to your previous education?",
-];
+import { useRouter } from "next/navigation";
+import {
+  MAX_INTERVIEW_TURNS,
+  type InterviewContext,
+  type InterviewSession,
+  type InterviewTurn,
+  type NextInterviewQuestion,
+} from "@/lib/interview-session";
 
 function formatTime(seconds: number) {
   return `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
 }
 
 export default function Interview() {
+  const router = useRouter();
   const [elapsed, setElapsed] = useState(0);
-  const [questionIndex, setQuestionIndex] = useState(0);
+  const [session, setSession] = useState<InterviewSession | null>(null);
   const [answer, setAnswer] = useState("");
   const [thinking, setThinking] = useState(false);
-  const [ended, setEnded] = useState(false);
+  const [error, setError] = useState("");
 
-  useEffect(() => {
-    if (ended) return;
-    const interval = window.setInterval(() => setElapsed((time) => time + 1), 1000);
-    return () => window.clearInterval(interval);
-  }, [ended]);
-
-  function submitAnswer() {
-    if (!answer.trim() || thinking) return;
+  async function requestNextQuestion(currentSession: InterviewSession) {
     setThinking(true);
-    window.setTimeout(() => {
-      if (questionIndex === questions.length - 1) {
-        setEnded(true);
-        setThinking(false);
-        return;
+    setError("");
+
+    try {
+      const response = await fetch("/api/interview/next-question", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ session: currentSession }),
+      });
+      let result: unknown;
+      try {
+        result = await response.json();
+      } catch {
+        throw new Error("The interviewer returned an invalid response. Please try again.");
       }
-      setQuestionIndex(questionIndex + 1);
+      if (!response.ok) {
+        const message = typeof result === "object" && result !== null && "error" in result && typeof result.error === "string"
+          ? result.error
+          : "The interviewer could not respond. Please try again.";
+        throw new Error(message);
+      }
+      if (
+        typeof result !== "object"
+        || result === null
+        || !("question" in result)
+        || typeof result.question !== "string"
+        || !("isFollowUp" in result)
+        || typeof result.isFollowUp !== "boolean"
+        || !("interviewComplete" in result)
+        || typeof result.interviewComplete !== "boolean"
+        || (!result.interviewComplete && !result.question.trim())
+      ) {
+        throw new Error("The interviewer returned an invalid response. Please try again.");
+      }
+
+      const next = result as NextInterviewQuestion;
+      const updatedAt = new Date().toISOString();
+      setSession((current) => {
+        if (!current || current.status !== "in-progress" || current.updatedAt !== currentSession.updatedAt) return current;
+        if (next.interviewComplete) {
+          return { ...current, status: "completed", updatedAt };
+        }
+        const turn: InterviewTurn = {
+          interviewerQuestion: next.question,
+          candidateAnswer: null,
+          isFollowUp: next.isFollowUp,
+          askedAt: updatedAt,
+        };
+        return { ...current, turns: [...current.turns, turn], updatedAt };
+      });
       setAnswer("");
+    } catch (requestError) {
+      setError(requestError instanceof Error ? requestError.message : "The interviewer could not respond. Please try again.");
+    } finally {
       setThinking(false);
-    }, 1300);
+    }
   }
 
-  if (ended) {
+  useEffect(() => {
+    const storedContext = window.sessionStorage.getItem("f1-interview-context");
+    if (!storedContext) {
+      router.replace("/app/practice/setup");
+      return;
+    }
+
+    try {
+      const candidateContext = JSON.parse(storedContext) as InterviewContext;
+      const startedAt = new Date().toISOString();
+      const initialSession: InterviewSession = {
+        candidateContext,
+        status: "in-progress",
+        turns: [],
+        startedAt,
+        updatedAt: startedAt,
+      };
+      setSession(initialSession);
+      void requestNextQuestion(initialSession);
+    } catch {
+      router.replace("/app/practice/setup");
+    }
+  }, [router]);
+
+  useEffect(() => {
+    if (session?.status !== "in-progress") return;
+    const interval = window.setInterval(() => setElapsed((time) => time + 1), 1000);
+    return () => window.clearInterval(interval);
+  }, [session?.status]);
+
+  function submitAnswer() {
+    if (!answer.trim() || thinking || !session) return;
+    const answeredAt = new Date().toISOString();
+    const answeredSession: InterviewSession = {
+      ...session,
+      updatedAt: answeredAt,
+      turns: session.turns.map((turn, index) =>
+        index === session.turns.length - 1
+          ? { ...turn, candidateAnswer: answer.trim(), answeredAt }
+          : turn
+      ),
+    };
+    setSession(answeredSession);
+    void requestNextQuestion(answeredSession);
+  }
+
+  if (!session) return null;
+
+  const questionIndex = session.turns.length - 1;
+  const currentTurn = session.turns[questionIndex];
+
+  if (session.status !== "in-progress") {
     return (
       <section className="interview-screen interview-finished">
         <Link className="wordmark interview-brand" href="/app/practice"><span className="brand-mark">f.</span><span>F1 Interview</span></Link>
@@ -71,9 +160,9 @@ export default function Interview() {
       <div className="interview-body">
         <div className="interview-progress">
           <span>YOUR INTERVIEW</span>
-          <span>{String(questionIndex + 1).padStart(2, "0")} <i>/</i> {String(questions.length).padStart(2, "0")}</span>
+          <span>{String(Math.max(session.turns.length, 1)).padStart(2, "0")} <i>/</i> {String(MAX_INTERVIEW_TURNS).padStart(2, "0")}</span>
         </div>
-        <div className="interview-progress-track"><span style={{ width: `${((questionIndex + 1) / questions.length) * 100}%` }} /></div>
+        <div className="interview-progress-track"><span style={{ width: `${(session.turns.length / MAX_INTERVIEW_TURNS) * 100}%` }} /></div>
 
         <div className="interviewer">
           <div className={`interviewer-orb${thinking ? " is-thinking" : ""}`}>
@@ -84,8 +173,8 @@ export default function Interview() {
         </div>
 
         <div className="question-block" aria-live="polite">
-          <p className="eyebrow">{thinking ? "ONE MOMENT" : "QUESTION"} <span>·</span> {String(questionIndex + 1).padStart(2, "0")}</p>
-          <h1 key={questionIndex}>{thinking ? "Thank you. Let me think about that." : questions[questionIndex]}</h1>
+          <p className="eyebrow">{thinking ? "ONE MOMENT" : "QUESTION"} <span>·</span> {String(Math.max(session.turns.length, 1)).padStart(2, "0")}</p>
+          <h1 key={questionIndex}>{thinking ? "Thank you. Let me think about that." : currentTurn?.interviewerQuestion ?? "The interviewer is unavailable right now."}</h1>
         </div>
 
         <div className={`listening-card${thinking ? " processing" : ""}`}>
@@ -101,10 +190,15 @@ export default function Interview() {
         </div>
 
         <label className="response-label" htmlFor="response">YOUR RESPONSE <span>· TAKE YOUR TIME</span></label>
-        <textarea id="response" className="response-area" value={answer} onChange={(event) => setAnswer(event.target.value)} placeholder="Gather your thoughts here, or answer out loud…" disabled={thinking} />
+        <textarea id="response" className="response-area" value={answer} onChange={(event) => setAnswer(event.target.value)} placeholder="Gather your thoughts here, or answer out loud…" disabled={thinking || !currentTurn} />
+        {error && <p className="form-error" role="alert">{error}</p>}
         <div className="interview-actions">
-          <button className="end-interview" type="button" onClick={() => setEnded(true)}>End interview <span aria-hidden="true">↗</span></button>
-          <button className="button button-dark submit-answer" type="button" disabled={!answer.trim() || thinking} onClick={submitAnswer}>{thinking ? "One moment…" : "Submit response"} <span aria-hidden="true">→</span></button>
+          <button className="end-interview" type="button" onClick={() => setSession((current) => current ? { ...current, status: "ended", updatedAt: new Date().toISOString() } : current)}>End interview <span aria-hidden="true">↗</span></button>
+          {error && currentTurn?.candidateAnswer !== null ? (
+            <button className="button button-dark submit-answer" type="button" disabled={thinking} onClick={() => void requestNextQuestion(session)}>Retry question <span aria-hidden="true">→</span></button>
+          ) : (
+            <button className="button button-dark submit-answer" type="button" disabled={!answer.trim() || thinking || !currentTurn} onClick={submitAnswer}>{thinking ? "One moment…" : "Submit response"} <span aria-hidden="true">→</span></button>
+          )}
         </div>
       </div>
       <footer className="interview-footer"><span>There’s no perfect answer. Just your answer.</span><span>PRACTICE ONLY · NOT LEGAL ADVICE</span></footer>

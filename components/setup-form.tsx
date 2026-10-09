@@ -2,20 +2,8 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-
-export type InterviewContext = {
-  university: string;
-  program: string;
-  degree: string;
-  startTerm: string;
-  previousEducation: string;
-  whyProgram: string;
-  fundingMethod: string;
-  primarySponsor: string;
-  currentOccupation: string;
-  previousTravel: string;
-  anythingImportant: string;
-};
+import type { InterviewContext } from "@/lib/interview-session";
+export type { InterviewContext } from "@/lib/interview-session";
 
 export default function SetupForm() {
   const router = useRouter();
