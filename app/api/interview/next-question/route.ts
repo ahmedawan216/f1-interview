@@ -1,30 +1,12 @@
 import { NextResponse } from "next/server";
 import {
   MAX_INTERVIEW_TURNS,
-  type InterviewContext,
+  isInterviewContext,
+  isInterviewTurn,
+  isRecord,
   type InterviewSession,
-  type InterviewTurn,
   type NextInterviewQuestion,
 } from "@/lib/interview-session";
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
-}
-
-function isInterviewContext(value: unknown): value is InterviewContext {
-  return isRecord(value)
-    && ["university", "program", "degree", "startTerm", "previousEducation", "whyProgram", "fundingMethod", "primarySponsor", "currentOccupation", "previousTravel", "anythingImportant"]
-      .every((key) => typeof value[key] === "string");
-}
-
-function isInterviewTurn(value: unknown): value is InterviewTurn {
-  return isRecord(value)
-    && typeof value.interviewerQuestion === "string"
-    && (typeof value.candidateAnswer === "string" || value.candidateAnswer === null)
-    && typeof value.isFollowUp === "boolean"
-    && typeof value.askedAt === "string"
-    && (value.answeredAt === undefined || typeof value.answeredAt === "string");
-}
 
 function isInterviewSession(value: unknown): value is InterviewSession {
   return isRecord(value)
@@ -81,7 +63,7 @@ export async function POST(request: Request) {
     } satisfies NextInterviewQuestion);
   }
 
-  const apiKey = process.env.GROQ_API_KEY;
+  const apiKey = process.env.GROQ_API_KEY?.trim();
   if (!apiKey) {
     console.error("GROQ_API_KEY is not configured.");
     return NextResponse.json({ error: "The interviewer is temporarily unavailable. Please try again shortly." }, { status: 503 });
@@ -96,7 +78,7 @@ export async function POST(request: Request) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
+        model: "openai/gpt-oss-120b",
         temperature: 0.4,
         response_format: { type: "json_object" },
         messages: [
@@ -120,25 +102,46 @@ export async function POST(request: Request) {
       signal: AbortSignal.timeout(30_000),
     });
   } catch (error) {
-    console.error("Groq interviewer request failed.", error);
-    return NextResponse.json({ error: "The interviewer could not respond. Please try again." }, { status: 502 });
-  }
-
-  if (!providerResponse.ok) {
-    console.error("Groq interviewer returned an unsuccessful response.", providerResponse.status);
-    return NextResponse.json({ error: "The interviewer could not respond. Please try again." }, { status: 502 });
+    console.error("Groq interviewer request failed before receiving a response.", {
+      errorName: error instanceof Error ? error.name : "UnknownError",
+    });
+    return NextResponse.json({
+      error: "The interviewer is temporarily unavailable. Please try again.",
+    }, { status: 502 });
   }
 
   let providerBody: unknown;
   try {
-    providerBody = await providerResponse.json();
+    const providerText = await providerResponse.text();
+    try {
+      providerBody = JSON.parse(providerText) as unknown;
+    } catch {
+      providerBody = null;
+    }
   } catch {
-    console.error("Groq interviewer returned invalid JSON.");
-    return NextResponse.json({ error: "The interviewer returned an invalid response. Please try again." }, { status: 502 });
+    console.error("Groq interviewer response could not be read.", { status: providerResponse.status });
+    return NextResponse.json({
+      error: "The interviewer is temporarily unavailable. Please try again.",
+    }, { status: 502 });
   }
 
-  const content = isRecord(providerBody)
-    && Array.isArray(providerBody.choices)
+  if (!providerResponse.ok) {
+    console.error("Groq interviewer returned an unsuccessful response.", {
+      status: providerResponse.status,
+    });
+    return NextResponse.json({
+      error: "The interviewer is temporarily unavailable. Please try again.",
+    }, { status: 502 });
+  }
+
+  if (!isRecord(providerBody)) {
+    console.error("Groq interviewer returned invalid JSON.", { status: providerResponse.status });
+    return NextResponse.json({
+      error: "The interviewer returned an invalid response. Please try again.",
+    }, { status: 502 });
+  }
+
+  const content = Array.isArray(providerBody.choices)
     && isRecord(providerBody.choices[0])
     && isRecord(providerBody.choices[0].message)
     ? providerBody.choices[0].message.content

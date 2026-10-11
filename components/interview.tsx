@@ -1,15 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   MAX_INTERVIEW_TURNS,
+  isInterviewContext,
   type InterviewContext,
   type InterviewSession,
   type InterviewTurn,
   type NextInterviewQuestion,
 } from "@/lib/interview-session";
+import {
+  SETUP_CONTEXT_KEY,
+  clearSetupContext,
+  consumeStartNewSessionFlag,
+  createInterviewId,
+  loadSavedInterview,
+  saveInterview,
+} from "@/lib/interview-storage";
 
 function formatTime(seconds: number) {
   return `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
@@ -22,8 +31,13 @@ export default function Interview() {
   const [answer, setAnswer] = useState("");
   const [thinking, setThinking] = useState(false);
   const [error, setError] = useState("");
+  // Guards one-time startup so React strict mode (or a re-render) can never fire a second question request.
+  const initialized = useRef(false);
+  const requestInFlight = useRef(false);
 
   async function requestNextQuestion(currentSession: InterviewSession) {
+    if (requestInFlight.current) return;
+    requestInFlight.current = true;
     setThinking(true);
     setError("");
 
@@ -37,12 +51,12 @@ export default function Interview() {
       try {
         result = await response.json();
       } catch {
-        throw new Error("The interviewer returned an invalid response. Please try again.");
+        throw new Error(`The interviewer returned an invalid response (HTTP ${response.status}). Please try again.`);
       }
       if (!response.ok) {
         const message = typeof result === "object" && result !== null && "error" in result && typeof result.error === "string"
           ? result.error
-          : "The interviewer could not respond. Please try again.";
+          : `The interviewer could not respond (HTTP ${response.status}). Please try again.`;
         throw new Error(message);
       }
       if (
@@ -76,41 +90,87 @@ export default function Interview() {
       });
       setAnswer("");
     } catch (requestError) {
+      const lastTurn = currentSession.turns[currentSession.turns.length - 1];
+      if (lastTurn?.candidateAnswer !== null && lastTurn?.candidateAnswer !== undefined) {
+        setAnswer(lastTurn.candidateAnswer);
+      }
       setError(requestError instanceof Error ? requestError.message : "The interviewer could not respond. Please try again.");
     } finally {
+      requestInFlight.current = false;
       setThinking(false);
     }
   }
 
   useEffect(() => {
-    const storedContext = window.sessionStorage.getItem("f1-interview-context");
+    if (initialized.current) return;
+    initialized.current = true;
+
+    // A submitted setup explicitly starts a new record; otherwise restore the latest practice.
+    const shouldStartNewSession = consumeStartNewSessionFlag();
+    const saved = shouldStartNewSession ? null : loadSavedInterview();
+    if (saved) {
+      setSession(saved.session);
+      setElapsed(saved.elapsedSeconds);
+      const lastTurn = saved.session.turns[saved.session.turns.length - 1];
+      setAnswer(lastTurn?.candidateAnswer ?? "");
+      // Only ask for a question when none is waiting for an answer (e.g. the refresh interrupted the request).
+      if (saved.session.status === "in-progress" && (!lastTurn || lastTurn.candidateAnswer !== null)) {
+        void requestNextQuestion(saved.session);
+      }
+      return;
+    }
+
+    // 2. Otherwise start a fresh session from the setup form.
+    let storedContext: string | null;
+    try {
+      storedContext = window.sessionStorage.getItem(SETUP_CONTEXT_KEY);
+    } catch {
+      router.replace("/app/practice/setup");
+      return;
+    }
     if (!storedContext) {
       router.replace("/app/practice/setup");
       return;
     }
 
     try {
-      const candidateContext = JSON.parse(storedContext) as InterviewContext;
+      const parsedContext: unknown = JSON.parse(storedContext);
+      if (!isInterviewContext(parsedContext)) throw new Error("Invalid setup context.");
+      const candidateContext: InterviewContext = parsedContext;
       const startedAt = new Date().toISOString();
       const initialSession: InterviewSession = {
+        id: createInterviewId(),
         candidateContext,
         status: "in-progress",
         turns: [],
+        report: null,
         startedAt,
         updatedAt: startedAt,
       };
+      clearSetupContext();
       setSession(initialSession);
       void requestNextQuestion(initialSession);
     } catch {
+      clearSetupContext();
       router.replace("/app/practice/setup");
     }
   }, [router]);
+
+  // Save only once a session exists, so the empty pre-restore state can never overwrite stored data.
+  useEffect(() => {
+    if (session) saveInterview(session, elapsed);
+  }, [session, elapsed]);
 
   useEffect(() => {
     if (session?.status !== "in-progress") return;
     const interval = window.setInterval(() => setElapsed((time) => time + 1), 1000);
     return () => window.clearInterval(interval);
   }, [session?.status]);
+
+  useEffect(() => {
+    if (!session || session.status === "in-progress" || session.turns.length === 0) return;
+    router.replace(`/app/practice/results/${encodeURIComponent(session.id)}`);
+  }, [router, session]);
 
   function submitAnswer() {
     if (!answer.trim() || thinking || !session) return;
@@ -139,10 +199,10 @@ export default function Interview() {
         <Link className="wordmark interview-brand" href="/app/practice"><span className="brand-mark">f.</span><span>F1 Interview</span></Link>
         <div className="finished-card">
           <img className="finished-plane" src="/art/plane.svg" alt="" aria-hidden="true" />
-          <p className="eyebrow">SESSION COMPLETE</p>
-          <h1>You showed up.<br /><em className="marked">That’s a good start.<img className="marker-line" src="/art/marker-underline.webp" alt="" aria-hidden="true" /></em></h1>
-          <p className="page-intro">You spent {formatTime(elapsed)} practicing. Take a moment to notice what felt clear — and what you’d like to explore next.</p>
-          <Link className="button button-dark" href="/app/practice">Back to your practice <span aria-hidden="true">→</span></Link>
+          <p className="eyebrow">SESSION ENDED EARLY</p>
+          <h1>This practice<br /><em className="marked">is incomplete.<img className="marker-line" src="/art/marker-underline.webp" alt="" aria-hidden="true" /></em></h1>
+          <p className="page-intro">No complete answer was saved, so there is no report to show. You spent {formatTime(elapsed)} in this session.</p>
+          <Link className="button button-dark" href="/app/practice/setup">Start a new practice <span aria-hidden="true">→</span></Link>
         </div>
         <p className="interview-disclaimer">Practice only · Not legal advice · Not an official U.S. government simulator</p>
       </section>
@@ -194,7 +254,7 @@ export default function Interview() {
         {error && <p className="form-error" role="alert">{error}</p>}
         <div className="interview-actions">
           <button className="end-interview" type="button" onClick={() => setSession((current) => current ? { ...current, status: "ended", updatedAt: new Date().toISOString() } : current)}>End interview <span aria-hidden="true">↗</span></button>
-          {error && currentTurn?.candidateAnswer !== null ? (
+          {error && (!currentTurn || currentTurn.candidateAnswer !== null) ? (
             <button className="button button-dark submit-answer" type="button" disabled={thinking} onClick={() => void requestNextQuestion(session)}>Retry question <span aria-hidden="true">→</span></button>
           ) : (
             <button className="button button-dark submit-answer" type="button" disabled={!answer.trim() || thinking || !currentTurn} onClick={submitAnswer}>{thinking ? "One moment…" : "Submit response"} <span aria-hidden="true">→</span></button>

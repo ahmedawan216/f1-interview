@@ -1,4 +1,5 @@
 import Link from "next/link";
+import RecentPractice from "@/components/recent-practice";
 
 const practiceModes = [
   {
@@ -105,6 +106,8 @@ export default function PracticePage() {
           <span className="practice-footnote-tag">F-1 ONLY · PRACTICE ONLY</span>
         </div>
       </section>
+
+      <RecentPractice />
     </div>
   );
 }

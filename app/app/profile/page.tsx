@@ -1,3 +1,5 @@
+import ClearPracticeData from "@/components/clear-practice-data";
+
 export default function ProfilePage() {
   return (
     <div className="page-wrap placeholder-page profile-page">
@@ -13,6 +15,7 @@ export default function ProfilePage() {
         <img className="placeholder-spark" src="/art/doodle-spark.webp" alt="" aria-hidden="true" />
         <div><span className="mode-title">No account needed.</span><span className="mode-description">Your practice is ready whenever you are.</span></div>
       </div>
+      <ClearPracticeData />
     </div>
   );
 }
