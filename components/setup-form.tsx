@@ -6,7 +6,9 @@ import type { InterviewContext } from "@/lib/interview-session";
 import {
   SETUP_CONTEXT_KEY,
   START_NEW_SESSION_KEY,
+  loadSetupAcknowledgment,
   loadSetupDraft,
+  saveSetupAcknowledgment,
   saveSetupDraft,
 } from "@/lib/interview-storage";
 export type { InterviewContext } from "@/lib/interview-session";
@@ -29,6 +31,8 @@ export default function SetupForm() {
   const router = useRouter();
   const [context, setContext] = useState<InterviewContext>(EMPTY_CONTEXT);
   const [error, setError] = useState("");
+  const [acknowledged, setAcknowledged] = useState(false);
+  const [draftSaveFailed, setDraftSaveFailed] = useState(false);
   const contextRef = useRef(EMPTY_CONTEXT);
   const userEditedRef = useRef(false);
 
@@ -39,6 +43,7 @@ export default function SetupForm() {
     const restoredContext = savedDraft ? { ...EMPTY_CONTEXT, ...savedDraft } : EMPTY_CONTEXT;
     contextRef.current = restoredContext;
     setContext(restoredContext);
+    setAcknowledged(loadSetupAcknowledgment());
   }, []);
 
   function updateField(field: keyof InterviewContext, value: string) {
@@ -46,7 +51,7 @@ export default function SetupForm() {
     const updatedContext = { ...contextRef.current, [field]: value };
     contextRef.current = updatedContext;
     setContext(updatedContext);
-    saveSetupDraft(updatedContext);
+    setDraftSaveFailed(!saveSetupDraft(updatedContext));
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -109,9 +114,10 @@ export default function SetupForm() {
       <p className="setup-before-note">Before you begin: Take a moment to gather your thoughts about your university, study plans, previous education, and how you&apos;ll fund your studies. Your answers will help personalize your practice interview.</p>
       <div className="form-submit-row">
         <p className="setup-privacy-note">Practice only; not legal advice or a government service. Your setup, answers, and reports are saved in this browser, and interview content is also sent to Groq to generate questions and feedback. Avoid entering account numbers or other highly sensitive details; clear saved data from Profile.</p>
-        <label className="setup-data-acknowledgment"><input type="checkbox" required onInvalid={() => setError("Please acknowledge how your practice data is stored and processed before continuing.")} onChange={() => setError("")} /><span>I understand this practice text is saved in my browser and sent to Groq for generation.</span></label>
+        <label className="setup-data-acknowledgment"><input type="checkbox" required checked={acknowledged} onInvalid={() => setError("Please acknowledge how your practice data is stored and processed before continuing.")} onChange={(event) => { const next = event.currentTarget.checked; setAcknowledged(next); setError(""); if (!saveSetupAcknowledgment(next)) setDraftSaveFailed(true); }} /><span>I understand this practice text is saved in my browser and sent to Groq for generation.</span></label>
         <button className="button button-dark" type="submit">Continue to your interview <span aria-hidden="true">→</span></button>
       </div>
+      {draftSaveFailed && <p className="form-error" role="alert">Your browser could not save this draft. Keep this tab open and check your browser storage settings before refreshing.</p>}
       {error && <p className="form-error" role="alert">{error}</p>}
     </form>
   );
