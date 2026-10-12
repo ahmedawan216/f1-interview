@@ -16,6 +16,7 @@ export const SAVED_SESSION_KEY = "f1-interview-saved-session";
 export const SETUP_CONTEXT_KEY = "f1-interview-context";
 export const START_NEW_SESSION_KEY = "f1-interview-start-new-session";
 export const SETUP_DRAFT_KEY = "f1-interview-setup-draft";
+export const SETUP_ACKNOWLEDGMENT_KEY = "f1-interview-setup-acknowledged";
 const SETUP_DRAFT_VERSION = 1;
 const SETUP_DRAFT_FIELDS: Array<keyof InterviewContext> = [
   "university",
@@ -78,29 +79,45 @@ export function loadSetupDraft(): Partial<InterviewContext> | null {
     }
     return draft;
   } catch {
-    try {
-      window.localStorage.removeItem(SETUP_DRAFT_KEY);
-    } catch {
-      // Storage unavailable; nothing more to do.
-    }
+    // Do not delete a user's draft when storage access itself fails.
     return null;
   }
 }
 
-export function saveSetupDraft(values: InterviewContext) {
+export function saveSetupDraft(values: InterviewContext): boolean {
   try {
     window.localStorage.setItem(
       SETUP_DRAFT_KEY,
       JSON.stringify({ version: SETUP_DRAFT_VERSION, values }),
     );
+    return true;
   } catch {
-    // Storage full or blocked: the form remains usable for this visit.
+    // Report failure to the UI instead of silently implying the draft was saved.
+    return false;
+  }
+}
+
+export function loadSetupAcknowledgment(): boolean {
+  try {
+    return window.localStorage.getItem(SETUP_ACKNOWLEDGMENT_KEY) === "true";
+  } catch {
+    return false;
+  }
+}
+
+export function saveSetupAcknowledgment(acknowledged: boolean): boolean {
+  try {
+    window.localStorage.setItem(SETUP_ACKNOWLEDGMENT_KEY, String(acknowledged));
+    return true;
+  } catch {
+    return false;
   }
 }
 
 export function clearSetupDraft() {
   try {
     window.localStorage.removeItem(SETUP_DRAFT_KEY);
+    window.localStorage.removeItem(SETUP_ACKNOWLEDGMENT_KEY);
   } catch {
     // Storage unavailable.
   }
