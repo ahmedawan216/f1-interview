@@ -6,7 +6,6 @@ import type { InterviewContext } from "@/lib/interview-session";
 import {
   SETUP_CONTEXT_KEY,
   START_NEW_SESSION_KEY,
-  clearSetupDraft,
   loadSetupDraft,
   saveSetupDraft,
 } from "@/lib/interview-storage";
@@ -31,8 +30,11 @@ export default function SetupForm() {
   const [context, setContext] = useState<InterviewContext>(EMPTY_CONTEXT);
   const [error, setError] = useState("");
   const contextRef = useRef(EMPTY_CONTEXT);
+  const userEditedRef = useRef(false);
 
   useEffect(() => {
+    // Do not let late draft restoration overwrite anything the user typed during hydration.
+    if (userEditedRef.current) return;
     const savedDraft = loadSetupDraft();
     const restoredContext = savedDraft ? { ...EMPTY_CONTEXT, ...savedDraft } : EMPTY_CONTEXT;
     contextRef.current = restoredContext;
@@ -40,6 +42,7 @@ export default function SetupForm() {
   }, []);
 
   function updateField(field: keyof InterviewContext, value: string) {
+    userEditedRef.current = true;
     const updatedContext = { ...contextRef.current, [field]: value };
     contextRef.current = updatedContext;
     setContext(updatedContext);
@@ -51,7 +54,6 @@ export default function SetupForm() {
     try {
       window.sessionStorage.setItem(SETUP_CONTEXT_KEY, JSON.stringify(contextRef.current));
       window.sessionStorage.setItem(START_NEW_SESSION_KEY, "true");
-      clearSetupDraft();
       router.push("/app/practice/interview");
     } catch {
       setError("We couldn’t save your answers in this browser. Please check your browser storage settings and try again.");
@@ -107,7 +109,7 @@ export default function SetupForm() {
       <p className="setup-before-note">Before you begin: Take a moment to gather your thoughts about your university, study plans, previous education, and how you&apos;ll fund your studies. Your answers will help personalize your practice interview.</p>
       <div className="form-submit-row">
         <p className="setup-privacy-note">Practice only; not legal advice or a government service. Your setup, answers, and reports are saved in this browser, and interview content is also sent to Groq to generate questions and feedback. Avoid entering account numbers or other highly sensitive details; clear saved data from Profile.</p>
-        <label className="setup-data-acknowledgment"><input type="checkbox" required /><span>I understand this practice text is saved in my browser and sent to Groq for generation.</span></label>
+        <label className="setup-data-acknowledgment"><input type="checkbox" required onInvalid={() => setError("Please acknowledge how your practice data is stored and processed before continuing.")} onChange={() => setError("")} /><span>I understand this practice text is saved in my browser and sent to Groq for generation.</span></label>
         <button className="button button-dark" type="submit">Continue to your interview <span aria-hidden="true">→</span></button>
       </div>
       {error && <p className="form-error" role="alert">{error}</p>}
