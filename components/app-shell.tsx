@@ -58,7 +58,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <div className={onInterview ? "workspace-main interview-main" : "workspace-main"}>
         {!onInterview && (
           <header className="workspace-topbar">
-            <div className="breadcrumb"><span>Workspace</span><span>/</span><strong>{navigation.find((item) => pathname.startsWith(item.href))?.label ?? "Practice"}</strong></div>
+            <div className="breadcrumb"><span>Workspace</span><span>/</span><strong>{navigation.find((item) => pathname === item.href || (item.href !== "/app/practice" && pathname.startsWith(item.href + "/")) || (item.href === "/app/practice" && pathname.startsWith(item.href)))?.label ?? "Practice"}</strong></div>
             <span className="topbar-note"><span className="topbar-dot" /> YOUR OWN PACE</span>
           </header>
         )}
