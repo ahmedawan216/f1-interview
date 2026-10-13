@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 const navigation = [
   { label: "Practice", href: "/app/practice", icon: "spark" },
+  { label: "View Report", href: "/app/report", icon: "report" },
   { label: "Progress", href: "/app/progress", icon: "chart" },
   { label: "Profile", href: "/app/profile", icon: "person" },
 ];
@@ -12,6 +13,9 @@ const navigation = [
 function NavIcon({ name }: { name: string }) {
   if (name === "spark") {
     return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 14.2 9.8 20.5 12l-6.3 2.2L12 20.5l-2.2-6.3L3.5 12l6.3-2.2L12 3.5Z" /><path d="m19 3 .7 2.3L22 6l-2.3.7L19 9l-.7-2.3L16 6l2.3-.7L19 3Z" /></svg>;
+  }
+  if (name === "report") {
+    return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4 4V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z" /><path d="M14 3.5V8h4M9 12h6M9 16h6" /></svg>;
   }
   if (name === "chart") {
     return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5h16M6.5 16v-4m5 4V6m5 10v-7" /></svg>;
