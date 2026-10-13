@@ -31,7 +31,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     <div className="workspace">
       {!onInterview && (
       <aside className="sidebar">
-        <Link className="wordmark app-wordmark" href="/app/practice">
+        <Link className="wordmark app-wordmark" href="/" aria-label="F1 Interview home">
           <span className="brand-mark">f.</span>
           <span>F1 Interview</span>
         </Link>
