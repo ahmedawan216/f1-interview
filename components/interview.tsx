@@ -193,7 +193,7 @@ export default function Interview() {
   if (initError) {
     return (
       <section className="interview-screen interview-finished">
-        <Link className="wordmark interview-brand" href="/app/practice"><span className="brand-mark">f.</span><span>F1 Interview</span></Link>
+        <Link className="wordmark interview-brand" href="/" aria-label="F1 Interview home"><span className="brand-mark">f.</span><span>F1 Interview</span></Link>
         <div className="finished-card">
           <p className="eyebrow">COULDN’T START</p>
           <p className="form-error" role="alert">{initError}</p>
@@ -211,7 +211,7 @@ export default function Interview() {
   if (session.status !== "in-progress") {
     return (
       <section className="interview-screen interview-finished">
-        <Link className="wordmark interview-brand" href="/app/practice"><span className="brand-mark">f.</span><span>F1 Interview</span></Link>
+        <Link className="wordmark interview-brand" href="/" aria-label="F1 Interview home"><span className="brand-mark">f.</span><span>F1 Interview</span></Link>
         <div className="finished-card">
           <img className="finished-plane" src="/art/plane.svg" alt="" aria-hidden="true" />
           <p className="eyebrow">SESSION ENDED EARLY</p>
@@ -227,7 +227,7 @@ export default function Interview() {
   return (
     <section className="interview-screen">
       <header className="interview-header">
-        <Link className="wordmark interview-brand" href="/app/practice"><span className="brand-mark">f.</span><span>F1 Interview</span></Link>
+        <Link className="wordmark interview-brand" href="/" aria-label="F1 Interview home"><span className="brand-mark">f.</span><span>F1 Interview</span></Link>
         <div className="interview-session-label"><span className="live-dot" /> F-1 MOCK INTERVIEW</div>
         <div className="interview-timer"><span className="timer-dot" /> {formatTime(elapsed)}</div>
       </header>
