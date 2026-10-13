@@ -31,6 +31,7 @@ export default function Interview() {
   const [answer, setAnswer] = useState("");
   const [thinking, setThinking] = useState(false);
   const [error, setError] = useState("");
+  const [initError, setInitError] = useState("");
   // Guards one-time startup so React strict mode (or a re-render) can never fire a second question request.
   const initialized = useRef(false);
   const requestInFlight = useRef(false);
@@ -152,7 +153,8 @@ export default function Interview() {
       void requestNextQuestion(initialSession);
     } catch {
       clearSetupContext();
-      router.replace("/app/practice/setup");
+      // Say what happened instead of silently bouncing back to setup; the saved setup draft is untouched.
+      setInitError("We couldn’t start your interview from your setup answers. Your answers are still saved — go back to setup and try again.");
     }
   }, [router]);
 
@@ -186,6 +188,19 @@ export default function Interview() {
     };
     setSession(answeredSession);
     void requestNextQuestion(answeredSession);
+  }
+
+  if (initError) {
+    return (
+      <section className="interview-screen interview-finished">
+        <Link className="wordmark interview-brand" href="/app/practice"><span className="brand-mark">f.</span><span>F1 Interview</span></Link>
+        <div className="finished-card">
+          <p className="eyebrow">COULDN’T START</p>
+          <p className="form-error" role="alert">{initError}</p>
+          <Link className="button button-dark" href="/app/practice/setup">Back to setup <span aria-hidden="true">→</span></Link>
+        </div>
+      </section>
+    );
   }
 
   if (!session) return null;

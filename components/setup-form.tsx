@@ -33,10 +33,13 @@ export default function SetupForm() {
   const [error, setError] = useState("");
   const [acknowledged, setAcknowledged] = useState(false);
   const [draftSaveFailed, setDraftSaveFailed] = useState(false);
+  // False in the server HTML and until React has hydrated. If scripts never load, this stays false.
+  const [ready, setReady] = useState(false);
   const contextRef = useRef(EMPTY_CONTEXT);
   const userEditedRef = useRef(false);
 
   useEffect(() => {
+    setReady(true);
     // Do not let late draft restoration overwrite anything the user typed during hydration.
     if (userEditedRef.current) return;
     const savedDraft = loadSetupDraft();
@@ -115,8 +118,9 @@ export default function SetupForm() {
       <div className="form-submit-row">
         <p className="setup-privacy-note">Practice only; not legal advice or a government service. Your setup, answers, and reports are saved in this browser, and interview content is also sent to Groq to generate questions and feedback. Avoid entering account numbers or other highly sensitive details; clear saved data from Profile.</p>
         <label className="setup-data-acknowledgment"><input type="checkbox" required checked={acknowledged} onInvalid={() => setError("Please acknowledge how your practice data is stored and processed before continuing.")} onChange={(event) => { const next = event.currentTarget.checked; setAcknowledged(next); setError(""); if (!saveSetupAcknowledgment(next)) setDraftSaveFailed(true); }} /><span>I understand this practice text is saved in my browser and sent to Groq for generation.</span></label>
-        <button className="button button-dark" type="submit">Continue to your interview <span aria-hidden="true">→</span></button>
+        <button className="button button-dark" type="submit" disabled={!ready}>Continue to your interview <span aria-hidden="true">→</span></button>
       </div>
+      {!ready && <p className="form-error setup-js-warning" role="status">This page’s scripts haven’t loaded, so your answers aren’t being saved and Continue is turned off. Reload the page; if this keeps happening, try another browser or turn off extensions that block scripts.</p>}
       {draftSaveFailed && <p className="form-error" role="alert">Your browser could not save this draft. Keep this tab open and check your browser storage settings before refreshing.</p>}
       {error && <p className="form-error" role="alert">{error}</p>}
     </form>

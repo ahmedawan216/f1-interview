@@ -1240,6 +1240,14 @@ a.mode-card:hover .mode-arrow {
   color: #a13d32;
   font-size: 11px;
 }
+/* Server-rendered notice that React removes on hydration; it only becomes visible if hydration never happens. */
+.setup-js-warning {
+  visibility: hidden;
+  animation: setup-js-warning-reveal 0s 2.5s forwards;
+}
+@keyframes setup-js-warning-reveal {
+  to { visibility: visible; }
+}
 .placeholder-page {
   min-height: calc(100vh - 61px);
 }
